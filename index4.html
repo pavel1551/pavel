@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Регистрационная форма</title>
+  <style>
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: inline-block;
+      width: 150px;
+      vertical-align: top;
+    }
+
+    .required::after {
+      content: "*";
+      color: red;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Регистрационная форма</h2>
+
+  <form id="registration-form" method="post" action="check.php">
+    <!-- Личная информация -->
+    <div class="form-group">
+      <label for="last-name" class="required">Фамилия:</label>
+      <input type="text" id="last-name" name="last-name" pattern="[А-Яа-яЁё]+" required>
+    </div>
+
+    <div class="form-group">
+      <label for="first-name" class="required">Имя:</label>
+      <input type="text" id="first-name" name="first-name" pattern="[А-Яа-яЁё]+" required>
+    </div>
+
+    <div class="form-group">
+      <label for="middle-name">Отчество:</label>
+      <input type="text" id="middle-name" name="middle-name" pattern="[А-Яа-яЁё]+">
+    </div>
+
+    <div class="form-group">
+      <label class="required">Пол:</label>
+      <input type="radio" id="male" name="gender" value="Мужской" required>
+      <label for="male">Мужской</label>
+      <input type="radio" id="female" name="gender" value="Женский" required>
+      <label for="female">Женский</label>
+    </div>
+
+    <div class="form-group">
+      <label class="required">Цвет глаз:</label>
+      <input type="color" id="eye-color" name="eye-color" required>
+    </div>
+
+    <div class="form-group">
+      <label for="birthdate" class="required">Дата рождения:</label>
+      <input type="date" id="birthdate" name="birthdate" required>
+    </div>
+
+    <div class="form-group">
+      <label for="age" class="required">Возраст:</label>
+      <input type="number" id="age" name="age" min="18" max="100" required>
+    </div>
+
+    <!-- Контактная информация -->
+    <div class="form-group">
+      <label for="birth-place" class="required">Место рождения:</label>
+      <select id="birth-place" name="birth-place" required>
+        <option value="Москва">Москва</option>
+        <option value="Санкт-Петербург">Санкт-Петербург</option>
+        <option value="Екатеринбург">Екатеринбург</option>
+        <!-- Другие варианты -->
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="postal-code" class="required">Индекс:</label>
+      <input type="text" id="postal-code" name="postal-code" required>
+    </div>
+
+    <div class="form-group">
+      <label for="address" class="required">Домашний адрес:</label>
+      <textarea id="address" name="address" required></textarea>
+    </div>
+
+    <!-- Общая информация -->
+    <div class="form-group">
+      <label for="registration-date" class="required">Дата регистрации:</label>
+      <input type="date" id="registration-date" name="registration-date" required>
+    </div>
+
+    <div class="form-group">
+      <label for="phone" class="required">Номер телефона:</label>
+      <input type="tel" id="phone" name="phone" pattern="\+7-\d{3}-\d{3}-\d{2}-\d{2}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="email" class="required">E-mail:</label>
+      <input type="email" id="email" name="email" required>
+    </div>
+
+    <div class="form-group">
+      <label for="passport-screenshot" class="required">Скриншот паспорта:</label>
+      <input type="file" id="passport-screenshot" name="passport-screenshot" accept="image/jpeg" required>
+    </div>
+
+    <div class="form-group">
+      <label class="required">Откуда узнали о магазине:</label>
+      <input type="checkbox" id="word-of-mouth" name="source" value="Рекомендация от друга">
+      <label for="word-of-mouth">Рекомендация от друга</label>
+      <input type="checkbox" id="social-media" name="source" value="Социальные сети">
+      <label for="social-media">Социальные сети</label>
+      <input type="checkbox" id="internet-search" name="source" value="Поиск в интернете">
+      <label for="internet-search">Поиск в интернете</label>
+    </div>
+
+    <div class="form-group">
+      <label for="consent" class="required">Согласие на обработку данных:</label>
+      <input type="checkbox" id="consent" name="consent" required>
+      <label for="consent">Я согласен(а)</label>
+    </div>
+
+    <div class="form-group">
+      <input type="submit" value="Отправить">
+      <input type="reset" value="Очистить">
+    </div>
+  </form>
+
+  <script>
+    const form = document.getElementById('registration-form');
+
+    form.addEventListener('submit', function(event) {
+      const lastName = document.getElementById('last-name');
+      const firstName = document.getElementById('first-name');
+      const phone = document.getElementById('phone');
+      const email = document.getElementById('email');
+
+      if (!isValidName(lastName.value)) {
+        event.preventDefault();
+        lastName.classList.add('error');
+      } else {
+        lastName.classList.remove('error');
+      }
+
+      if (!isValidName(firstName.value)) {
+        event.preventDefault();
+        firstName.classList.add('error');
+      } else {
+        firstName.classList.remove('error');
+      }
+
+      if (!isValidPhone(phone.value)) {
+        event.preventDefault();
+        phone.classList.add('error');
+      } else {
+        phone.classList.remove('error');
+      }
+
+      if (!isValidEmail(email.value)) {
+        event.preventDefault();
+        email.classList.add('error');
+      } else {
+        email.classList.remove('error');
+      }
+    });
+
+    function isValidName(name) {
+      const nameRegex = /^[А-Яа-яЁё]+$/;
+      return nameRegex.test(name);
+    }
+
+    function isValidPhone(phone) {
+      const phoneRegex = /^\+7-\d{3}-\d{3}-\d{2}-\d{2}$/;
+      return phoneRegex.test(phone);
+    }
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+  </script>
+</body>
+</html>

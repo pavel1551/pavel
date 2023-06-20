@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Сайт для изучения JavaScript</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .menu {
+      margin-bottom: 20px;
+    }
+
+    .menu-item {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    .content {
+      margin-bottom: 20px;
+    }
+
+    .result {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      z-index: 999;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Добро пожаловать на сайт для изучения JavaScript!</h1>
+
+    <div class="menu">
+      <div class="menu-item" onclick="showGreeting()">1. Представиться</div>
+      <div class="menu-item" onclick="calculateTriangleArea()">2. Площадь треугольника</div>
+      <div class="menu-item" onclick="compareStrings()">3. Сравнение строк</div>
+      <div class="menu-item" onclick="findMinMax()">4. Минимальное и максимальное значение</div>
+      <div class="menu-item" onclick="startTimer()">5. Таймер</div>
+      <div class="menu-item" onclick="runQuiz()">6. Тест</div>
+      <div class="menu-item" onclick="showOverlay()">7. Заставка</div>
+    </div>
+
+    <div class="content">
+      <div id="greeting"></div>
+      <div id="triangleArea"></div>
+      <div id="stringComparison"></div>
+      <div id="minMax"></div>
+      <div id="timer"></div>
+      <div id="quiz"></div>
+    </div>
+
+    <div class="popup" onclick="hideOverlay()" id="overlay">
+      <div>
+        <h2>Заставка</h2>
+        <p>Текущая дата: <span id="currentDate"></span></p>
+        <p>Имя пользователя: <span id="username"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Пример 0: Поприветствовать пользователя
+    function showGreeting() {
+      var username = prompt("Пожалуйста, представьтесь");
+      if (username) {
+        document.getElementById("greeting").innerHTML = "Привет, " + username + "!";
+        localStorage.setItem("username", username);
+      }
+    }
+
+    // Пример 0*: Запомнить имя пользователя
+    var storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      document.getElementById("username").textContent = storedUsername;
+    }
+
+    // Пример 1: Площадь треугольника
+    function calculateTriangleArea() {
+      var base = prompt("Введите основание треугольника");
+      var height = prompt("Введите высоту треугольника");
+      var area = 0.5 * base * height;
+      document.getElementById("triangleArea").innerHTML = "Площадь треугольника: " + area;
+    }
+
+    // Пример 2: Сравнение строк
+    function compareStrings() {
+      var str1 = prompt("Введите первую строку");
+      var str2 = prompt("Введите вторую строку");
+      var areEqual = str1.length === str2.length;
+      document.getElementById("stringComparison").innerHTML = "Количество символов совпадает: " + areEqual;
+    }
+
+    // Пример 3: Минимальное и максимальное значение
+    function findMinMax() {
+      var numbers = [];
+      for (var i = 0; i < 5; i++) {
+        var number = prompt("Введите число " + (i + 1));
+        numbers.push(Number(number));
+      }
+      var min = Math.min(...numbers);
+      var max = Math.max(...numbers);
+      document.getElementById("minMax").innerHTML = "Минимальное значение: " + min + "<br>Максимальное значение: " + max;
+    }
+
+    // Пример 4*: Таймер
+    var timerInterval;
+    var startTime;
+    var elapsedTime = 0;
+
+    function startTimer() {
+      startTime = new Date().getTime();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function updateTimer() {
+      var currentTime = new Date().getTime();
+      elapsedTime = Math.floor((currentTime - startTime) / 1000);
+      document.getElementById("timer").innerHTML = "Прошло времени: " + elapsedTime + " сек.";
+    }
+
+    // Пример 5: Тест
+    function runQuiz() {
+      var correctAnswers = 0;
+      var totalQuestions = 10;
+
+      // Вопросы и ответы
+      var questions = [
+        {
+          question: "Вопрос 1: ...",
+          options: ["Ответ 1", "Ответ 2", "Ответ 3"],
+          correctAnswer: 0
+        },
+        // Другие вопросы...
+      ];
+
+      for (var i = 0; i < totalQuestions; i++) {
+        var userAnswer = prompt(questions[i].question + "\n" + questions[i].options.join("\n"));
+        if (userAnswer && Number(userAnswer) === questions[i].correctAnswer) {
+          correctAnswers++;
+        }
+      }
+
+      var resultPercentage = (correctAnswers / totalQuestions) * 100;
+      var resultText = "Вы ответили правильно на " + correctAnswers + " из " + totalQuestions + " вопросов. Результат: " + resultPercentage.toFixed(2) + "%";
+      document.getElementById("quiz").innerHTML = resultText;
+    }
+
+    // Пример 5*: Тест с выводом ответов
+    function runQuiz() {
+      var correctAnswers = 0;
+      var totalQuestions = 10;
+
+      // Вопросы и ответы
+      var questions = [
+        {
+          question: "Вопрос 1: ...",
+          options: ["Ответ 1", "Ответ 2", "Ответ 3"],
+          correctAnswer: 0
+        },
+        // Другие вопросы...
+      ];
+
+      var userAnswers = [];
+
+      for (var i = 0; i < totalQuestions; i++) {
+        var userAnswer = prompt(questions[i].question + "\n" + questions[i].options.join("\n"));
+        if (userAnswer && Number(userAnswer) === questions[i].correctAnswer) {
+          correctAnswers++;
+        }
+        userAnswers.push(userAnswer);
+      }
+
+      var resultPercentage = (correctAnswers / totalQuestions) * 100;
+      var resultText = "Вы ответили правильно на " + correctAnswers + " из " + totalQuestions + " вопросов. Результат: " + resultPercentage.toFixed(2) + "%";
+      document.getElementById("quiz").innerHTML = resultText + "<br><br>Ваши ответы:<br>" + userAnswers.join("<br>");
+    }
+
+    // Пример 6: Заставка
+    function showOverlay() {
+      var currentDate = new Date().toLocaleDateString();
+      document.getElementById("currentDate").textContent = currentDate;
+      document.getElementById("overlay").style.display = "flex";
+    }
+
+    function hideOverlay() {
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>
